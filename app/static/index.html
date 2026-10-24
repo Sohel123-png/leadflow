@@ -1,0 +1,1121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f5f7fc">
+<title>LeadFlow | CRM Dashboard</title>
+
+<style>
+:root {
+  --bg: #f5f7fc;
+  --surface: #ffffff;
+  --sidebar: #11182b;
+  --text: #172033;
+  --muted: #7b8499;
+  --line: #e8ebf3;
+  --primary: #5367ef;
+  --primary-light: #edf0ff;
+  --green: #15966a;
+  --amber: #c78519;
+  --red: #d64c5c;
+  --radius: 18px;
+  --shadow: 0 8px 30px rgba(29, 42, 79, .045);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+
+.hidden { display: none !important; }
+
+.layout { min-height: 100vh; }
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 250px;
+  padding: 26px 18px;
+  color: #dce2f4;
+  background:
+    radial-gradient(ellipse at 0% 0%, #26366b 0, transparent 48%),
+    var(--sidebar);
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 10px 35px;
+  color: #fff;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: -.8px;
+}
+
+.brand-icon {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #8190ff, #4c5de9);
+  box-shadow: 0 7px 20px #5267f14d;
+  font-size: 20px;
+}
+
+.nav-label {
+  padding: 0 12px;
+  margin-bottom: 12px;
+  color: #8590ad;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.6px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 12px 14px;
+  margin-bottom: 6px;
+  border-radius: 11px;
+  color: #aab4cc;
+  font-weight: 600;
+}
+
+.nav-item.active {
+  color: #fff;
+  background: linear-gradient(100deg, #5669ed, #4659d5);
+  box-shadow: 0 7px 20px #4057d53b;
+}
+
+.nav-icon {
+  width: 20px;
+  text-align: center;
+  font-size: 17px;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 16px 10px 0;
+}
+
+.plan-card {
+  padding: 16px;
+  background: #ffffff0c;
+  border: 1px solid #ffffff12;
+  border-radius: 14px;
+}
+
+.plan-card strong { color: white; }
+.plan-card p { color: #9da8c2; font-size: 12px; }
+
+.plan-line {
+  height: 5px;
+  margin-top: 12px;
+  border-radius: 10px;
+  background: #ffffff20;
+}
+
+.plan-line span {
+  display: block;
+  width: 65%;
+  height: 100%;
+  background: #8391ff;
+  border-radius: inherit;
+}
+
+.workspace {
+  margin-left: 250px;
+  min-height: 100vh;
+}
+
+.topbar {
+  height: 76px;
+  padding: 0 34px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+}
+
+.breadcrumb { color: var(--muted); font-size: 13px; }
+.breadcrumb strong { color: var(--text); }
+
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  border-radius: 13px;
+  color: #4859d7;
+  background: #edf0ff;
+  font-weight: 800;
+}
+
+.user-info strong { display: block; font-size: 13px; }
+.user-info span { color: var(--muted); font-size: 11px; }
+
+main {
+  width: 100%;
+  max-width: 1500px;
+  padding: 32px 34px 45px;
+  margin: auto;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.7px;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 6px 0;
+  font-size: clamp(25px, 3vw, 34px);
+  line-height: 1.2;
+  letter-spacing: -1.3px;
+}
+
+.subtitle { color: var(--muted); margin: 8px 0 0; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 15px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: white;
+  color: #37415b;
+  font-weight: 650;
+  transition: transform .18s, box-shadow .18s, background .18s;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px #27365a12;
+}
+
+.btn-primary {
+  color: white;
+  border-color: var(--primary);
+  background: linear-gradient(135deg, #6375f6, #4b5fdf);
+  box-shadow: 0 5px 15px #5367ef2a;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #4357db;
+}
+
+.btn-small { padding: 6px 9px; font-size: 11px; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 17px;
+  margin-bottom: 25px;
+}
+
+.stat-card {
+  min-width: 0;
+  padding: 21px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px #1b2c5010;
+}
+
+.stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.stat-label { color: var(--muted); font-size: 12px; font-weight: 650; }
+
+.stat-icon {
+  width: 37px;
+  height: 37px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  font-size: 17px;
+}
+
+.ic-blue { color: #5367ef; background: #edf0ff; }
+.ic-green { color: #15966a; background: #e6f7ef; }
+.ic-amber { color: #b77b15; background: #fff4df; }
+.ic-red { color: #d64c5c; background: #ffedef; }
+.ic-purple { color: #9360db; background: #f2eaff; }
+
+.stat-number {
+  display: block;
+  margin-top: 14px;
+  font-size: clamp(24px, 2.5vw, 32px);
+  font-weight: 800;
+  letter-spacing: -1.3px;
+  line-height: 1.2;
+}
+
+.stat-note { margin-top: 8px; color: var(--muted); font-size: 11px; }
+
+.panel {
+  margin-bottom: 23px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 23px 24px 18px;
+}
+
+.panel-title { margin: 0; font-size: 17px; letter-spacing: -.4px; }
+.panel-subtitle { color: var(--muted); font-size: 12px; margin: 5px 0 0; }
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0 24px 20px;
+}
+
+.field {
+  min-width: 0;
+  padding: 11px 13px;
+  border: 1px solid #e3e7f0;
+  border-radius: 10px;
+  outline: none;
+  background: #fbfcff;
+  color: var(--text);
+  transition: border-color .2s, box-shadow .2s;
+}
+
+.field:focus {
+  border-color: #8592ff;
+  box-shadow: 0 0 0 3px #5367ef16;
+}
+
+.search-field { flex: 1 1 230px; }
+.toolbar select { min-width: 140px; }
+
+.table-meta {
+  padding: 10px 24px;
+  color: var(--muted);
+  font-size: 11px;
+  border-top: 1px solid var(--line);
+  background: #fbfcff;
+  overflow-wrap: anywhere;
+}
+
+.table-wrap { overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; text-align: left; }
+
+thead { background: #fafbfe; }
+
+th {
+  padding: 14px 20px;
+  color: #818ba0;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .8px;
+  border-bottom: 1px solid var(--line);
+}
+
+td {
+  padding: 16px 20px;
+  border-bottom: 1px solid #eff1f6;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+tbody tr { transition: background .15s; }
+tbody tr:hover { background: #f9faff; }
+tbody tr:last-child td { border-bottom: none; }
+
+.lead-name { font-weight: 750; color: #273149; }
+.lead-email { margin-top: 3px; color: var(--muted); font-size: 11px; }
+.company { font-weight: 600; color: #49536b; }
+
+.source-tag {
+  padding: 4px 8px;
+  color: #64708a;
+  background: #f0f2f8;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 9px;
+  border-radius: 7px;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: capitalize;
+}
+
+.pill::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.pill.new { color: #5367ef; background: #edf0ff; }
+.pill.contacted { color: #b77b15; background: #fff4df; }
+.pill.won { color: #16895f; background: #e5f7ef; }
+.pill.lost { color: #d34a5a; background: #ffedef; }
+
+.row-actions { display: flex; gap: 5px; }
+
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 17px 24px;
+  border-top: 1px solid var(--line);
+}
+
+.page-buttons { display: flex; gap: 8px; }
+.page-info { color: var(--muted); font-size: 12px; }
+
+.add-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  gap: 12px;
+  padding: 0 24px 24px;
+}
+
+.add-grid .field { width: 100%; }
+
+.add-help {
+  margin: -7px 24px 23px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.login-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background:
+    radial-gradient(ellipse at 20% 20%, #dfe5ff 0, transparent 45%),
+    radial-gradient(ellipse at 80% 80%, #e4f4f3 0, transparent 45%),
+    #f5f7fc;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+  padding: 35px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: 0 25px 80px #17264a18;
+}
+
+.login-card .brand { padding: 0 0 28px; color: var(--text); }
+.login-card h2 { font-size: 27px; letter-spacing: -.8px; margin-bottom: 5px; }
+.login-card > p { color: var(--muted); font-size: 13px; }
+
+.login-form { display: grid; gap: 13px; margin-top: 23px; }
+.login-form label { font-size: 12px; font-weight: 700; }
+.login-form .field { width: 100%; margin-top: 6px; }
+.login-form .btn { width: 100%; margin-top: 6px; padding: 12px; }
+
+.demo-hint {
+  padding: 12px;
+  margin-top: 18px;
+  border-radius: 10px;
+  background: #f4f6ff;
+  color: #6977b6;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+}
+
+#msg {
+  position: fixed;
+  top: 88px;
+  right: 25px;
+  z-index: 30;
+  max-width: min(380px, calc(100vw - 35px));
+  padding: 13px 17px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 10px 35px #1b2c5017;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+#msg:empty { display: none; }
+#msg.error { color: var(--red); border-left: 4px solid var(--red); }
+#msg.success { color: var(--green); border-left: 4px solid var(--green); }
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 10px 2px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+@media (max-width: 1200px) {
+  .stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .stat-card { padding: 17px; }
+}
+
+@media (max-width: 850px) {
+  .sidebar { width: 74px; padding: 20px 10px; }
+  .brand { padding: 4px 8px 32px; }
+  .brand-text, .nav-label, .nav-item span:not(.nav-icon),
+  .sidebar-bottom { display: none; }
+  .nav-item { justify-content: center; padding: 13px 8px; }
+  .workspace { margin-left: 74px; }
+  .topbar { padding: 0 20px; }
+  main { padding: 25px 20px; }
+  .add-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .topbar { height: 65px; padding: 0 14px; }
+  .user-info { display: none; }
+  main { padding: 22px 12px; }
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .stat-card { padding: 13px; }
+  .stat-icon { width: 31px; height: 31px; }
+  .stat-number { font-size: 25px; }
+  .page-heading { align-items: flex-start; }
+  .panel-header { padding: 18px 15px 15px; }
+  .toolbar { padding: 0 15px 16px; }
+  .toolbar select, .toolbar .btn { flex: 1; }
+  .add-grid { grid-template-columns: 1fr; padding: 0 15px 18px; }
+  .add-help { margin: -2px 15px 20px; }
+  .pagination { padding: 14px 15px; }
+  th, td { padding: 13px 15px; }
+  .login-card { padding: 25px; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="login" class="login-wrap">
+  <section class="login-card">
+    <div class="brand">
+      <div class="brand-icon">↗</div>
+      <span>LeadFlow</span>
+    </div>
+
+    <div class="eyebrow">Welcome back</div>
+    <h2>Sign in to your workspace</h2>
+    <p>Manage leads. Build relationships. Close more deals.</p>
+
+    <form id="loginForm" class="login-form">
+      <label>
+        Email address
+        <input id="email" class="field" type="email"
+          value="admin@leadflow.com" autocomplete="username" required>
+      </label>
+
+      <label>
+        Password
+        <input id="password" class="field" type="password"
+          value="Admin@12345" autocomplete="current-password" required>
+      </label>
+
+      <button id="loginBtn" class="btn btn-primary" type="submit">
+        Sign in to dashboard <span>→</span>
+      </button>
+    </form>
+
+    <div class="demo-hint">
+      <strong>Demo environment</strong><br>
+      Sample credentials are pre-filled for demonstration.
+      Use only on your local demo backend.
+    </div>
+  </section>
+</div>
+
+<div id="dashboard" class="layout hidden">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">↗</div>
+      <span class="brand-text">LeadFlow</span>
+    </div>
+
+    <div class="nav-label">WORKSPACE</div>
+    <div class="nav-item active">
+      <span class="nav-icon">▦</span>
+      <span>Dashboard</span>
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">♙</span>
+      <span>Lead management</span>
+    </div>
+    <div class="nav-item">
+      <span class="nav-icon">▤</span>
+      <span>Reports & analytics</span>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="plan-card">
+        <strong>LeadFlow Pro</strong>
+        <p>Your workspace is ready to grow.</p>
+        <div class="plan-line"><span></span></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="workspace">
+    <header class="topbar">
+      <div class="breadcrumb">Workspace / <strong>Dashboard</strong></div>
+      <div class="top-actions">
+        <div class="avatar" id="avatar">AD</div>
+        <div class="user-info">
+          <strong id="who">Administrator</strong>
+          <span id="role">Workspace account</span>
+        </div>
+        <button id="logout" class="btn">Log out ↗</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-heading">
+        <div>
+          <div class="eyebrow">Overview</div>
+          <h1>Lead Dashboard</h1>
+          <p class="subtitle">Track your pipeline and turn opportunities into results.</p>
+        </div>
+        <button id="refresh" class="btn btn-primary">↻ &nbsp; Refresh data</button>
+      </div>
+
+      <section id="stats" class="stats">
+        <div class="stat-card">Loading statistics...</div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Lead pipeline</h2>
+            <p class="panel-subtitle">Manage and track your customer relationships.</p>
+          </div>
+          <span class="eyebrow">LIVE DATA</span>
+        </div>
+
+        <div class="toolbar">
+          <input id="q" class="field search-field"
+            placeholder="⌕  Search name, email or company"
+            aria-label="Search leads">
+
+          <select id="status" class="field" aria-label="Filter by status">
+            <option value="">All statuses</option>
+            <option value="new">New</option>
+            <option value="contacted">Contacted</option>
+            <option value="won">Won</option>
+            <option value="lost">Lost</option>
+          </select>
+
+          <select id="sort" class="field" aria-label="Sort leads">
+            <option value="-created_at">Newest first</option>
+            <option value="created_at">Oldest first</option>
+            <option value="name">Name A–Z</option>
+            <option value="-name">Name Z–A</option>
+          </select>
+        </div>
+
+        <div class="table-meta" id="meta">Waiting for your first request...</div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Lead / Contact</th>
+                <th>Company</th>
+                <th>Source</th>
+                <th>Status</th>
+                <th>Update status</th>
+              </tr>
+            </thead>
+            <tbody id="rows">
+              <tr><td colspan="5">Sign in to view your leads.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="pagination">
+          <span id="pageinfo" class="page-info">Page 1</span>
+          <div class="page-buttons">
+            <button id="prev" class="btn btn-small" disabled>← Previous</button>
+            <button id="next" class="btn btn-small" disabled>Next →</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <div>
+            <h2 class="panel-title">Add a new lead</h2>
+            <p class="panel-subtitle">Capture a prospect and start building the relationship.</p>
+          </div>
+          <span class="stat-icon ic-purple">＋</span>
+        </div>
+
+        <form id="addForm" class="add-grid">
+          <input id="nName" class="field" placeholder="Full name"
+            maxlength="150" required>
+          <input id="nEmail" class="field" type="email"
+            placeholder="Email address" maxlength="254" required>
+          <input id="nCompany" class="field" placeholder="Company name"
+            maxlength="150">
+          <button id="add" class="btn btn-primary" type="submit">＋ Add lead</button>
+        </form>
+
+        <p class="add-help">
+          Tip: refresh after creating a lead to check your API response and cache headers.
+        </p>
+      </section>
+
+      <footer class="footer">
+        <span>© LeadFlow · CRM Workspace</span>
+        <span>Lead management made simpler.</span>
+      </footer>
+    </main>
+  </div>
+</div>
+
+<div id="msg" role="status" aria-live="polite"></div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let token = null;
+let pages = 1;
+let requestVersion = 0;
+let searchTimer = null;
+let busy = false;
+
+const state = {
+  page: 1,
+  size: 10,
+  q: '',
+  status: '',
+  sort: '-created_at'
+};
+
+const NEXT = {
+  new: ['contacted', 'lost'],
+  contacted: ['won', 'lost']
+};
+
+function el(tag, text, cls) {
+  const node = document.createElement(tag);
+  if (text !== undefined && text !== null) node.textContent = String(text);
+  if (cls) node.className = cls;
+  return node;
+}
+
+function say(message, type = '') {
+  $('msg').textContent = message || '';
+  $('msg').className = type;
+}
+
+function guard(fn) {
+  return Promise.resolve()
+    .then(fn)
+    .catch(error => say(error.message || 'Something went wrong.', 'error'));
+}
+
+async function api(path, options = {}) {
+  const headers = new Headers(options.headers || {});
+  if (token) headers.set('Authorization', 'Bearer ' + token);
+
+  const started = performance.now();
+  let response;
+
+  try {
+    response = await fetch(path, { ...options, headers });
+  } catch {
+    throw new Error('Unable to reach the API. Check your backend and network.');
+  }
+
+  const elapsed = Math.round(performance.now() - started);
+  const cache = response.headers.get('x-cache');
+  const cacheText = cache ? ' · Redis ' + cache : '';
+
+  $('meta').textContent =
+    (options.method || 'GET') + ' ' + path.split('?')[0] +
+    ' · ' + elapsed + ' ms' + cacheText;
+
+  let data = null;
+  try {
+    data = await response.json();
+  } catch {}
+
+  if (response.status === 401 && token) {
+    logout();
+    throw new Error('Your session expired. Please sign in again.');
+  }
+
+  if (!response.ok) {
+    const detail = data && data.detail;
+    throw new Error(
+      typeof detail === 'string'
+        ? detail
+        : response.status === 422
+          ? 'Please check the information you entered.'
+          : 'Request failed (' + response.status + ').'
+    );
+  }
+
+  return data;
+}
+
+async function login(event) {
+  if (event) event.preventDefault();
+  if (busy) return;
+
+  busy = true;
+  $('loginBtn').disabled = true;
+  $('loginBtn').textContent = 'Signing in...';
+  say('');
+
+  try {
+    const body = new URLSearchParams({
+      username: $('email').value.trim(),
+      password: $('password').value
+    });
+
+    const result = await api('/auth/login', {
+      method: 'POST',
+      body
+    });
+
+    token = result.access_token;
+    const me = await api('/auth/me');
+
+    const name = me.full_name || me.email || 'User';
+    const role = me.role || 'Member';
+
+    $('who').textContent = name;
+    $('role').textContent = role;
+    $('avatar').textContent = name
+      .split(/\s+/)
+      .map(part => part[0])
+      .join('')
+      .slice(0, 2)
+      .toUpperCase();
+
+    $('login').classList.add('hidden');
+    $('dashboard').classList.remove('hidden');
+    $('logout').classList.remove('hidden');
+
+    state.page = 1;
+    await load();
+  } catch (error) {
+    token = null;
+    say(error.message, 'error');
+  } finally {
+    busy = false;
+    $('loginBtn').disabled = false;
+    $('loginBtn').textContent = 'Sign in to dashboard →';
+  }
+}
+
+function logout() {
+  token = null;
+  requestVersion++;
+
+  $('dashboard').classList.add('hidden');
+  $('login').classList.remove('hidden');
+  $('email').focus();
+
+  $('who').textContent = '';
+  $('role').textContent = '';
+  say('');
+}
+
+async function load() {
+  if (!token || busy) return;
+
+  const version = ++requestVersion;
+  const query = new URLSearchParams({
+    page: state.page,
+    size: state.size,
+    sort: state.sort
+  });
+
+  if (state.q) query.set('q', state.q);
+  if (state.status) query.set('status', state.status);
+
+  $('refresh').disabled = true;
+
+  try {
+    const results = await Promise.all([
+      api('/leads/stats/summary'),
+      api('/leads?' + query.toString())
+    ]);
+
+    if (version !== requestVersion || !token) return;
+
+    const [stats, data] = results;
+
+    renderStats(stats);
+    renderRows(data);
+  } finally {
+    if (version === requestVersion) $('refresh').disabled = false;
+  }
+}
+
+function renderStats(stats) {
+  const box = $('stats');
+  box.replaceChildren();
+
+  const byStatus = stats.by_status || {};
+  const cards = [
+    ['Total Leads', stats.total ?? 0, '↗', 'ic-blue', 'Across your pipeline'],
+    ['New Leads', byStatus.new ?? 0, '✳', 'ic-purple', 'Awaiting outreach'],
+    ['Contacted', byStatus.contacted ?? 0, '◎', 'ic-amber', 'In conversation'],
+    ['Won Deals', byStatus.won ?? 0, '✓', 'ic-green', 'Successfully closed'],
+    ['Lost Deals', byStatus.lost ?? 0, '↘', 'ic-red', 'Closed as lost']
+  ];
+
+  cards.forEach(([label, value, icon, color, note]) => {
+    const card = el('article', undefined, 'stat-card');
+    const top = el('div', undefined, 'stat-top');
+    top.append(el('span', label, 'stat-label'));
+    top.append(el('span', icon, 'stat-icon ' + color));
+
+    card.append(top);
+    card.append(el('strong', Number(value).toLocaleString(), 'stat-number'));
+    card.append(el('div', note, 'stat-note'));
+    box.append(card);
+  });
+}
+
+function renderRows(data) {
+  pages = Math.max(1, Number(data.pages) || 1);
+
+  const body = $('rows');
+  body.replaceChildren();
+
+  const items = Array.isArray(data.items) ? data.items : [];
+
+  if (!items.length) {
+    const tr = el('tr');
+    const td = el('td', 'No leads found. Try changing your search or filters.');
+    td.colSpan = 5;
+    tr.append(td);
+    body.append(tr);
+  }
+
+  items.forEach(lead => {
+    const tr = el('tr');
+
+    const contact = el('td');
+    contact.append(el('div', lead.name || 'Unnamed lead', 'lead-name'));
+    contact.append(el('div', lead.email || '—', 'lead-email'));
+    tr.append(contact);
+
+    tr.append(el('td', lead.company || '—', 'company'));
+    tr.append(el('td', lead.source || '—', 'source-tag'));
+
+    const statusCell = el('td');
+    const status = ['new', 'contacted', 'won', 'lost'].includes(lead.status)
+      ? lead.status : 'new';
+
+    statusCell.append(el('span', status, 'pill ' + status));
+    tr.append(statusCell);
+
+    const actions = el('td');
+    const actionGroup = el('div', undefined, 'row-actions');
+    const next = NEXT[status] || [];
+
+    if (next.length) {
+      next.forEach(newStatus => {
+        const button = el('button', newStatus, 'btn btn-small');
+        button.type = 'button';
+        button.setAttribute('aria-label', 'Move lead to ' + newStatus);
+
+        button.onclick = () => guard(async () => {
+          button.disabled = true;
+
+          try {
+            await api('/leads/' + encodeURIComponent(lead.id) + '/status', {
+              method: 'PATCH',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ status: newStatus })
+            });
+
+            say('Lead status updated successfully.', 'success');
+            await load();
+          } finally {
+            button.disabled = false;
+          }
+        });
+
+        actionGroup.append(button);
+      });
+    } else {
+      actionGroup.append(el('span', 'Final status', 'page-info'));
+    }
+
+    actions.append(actionGroup);
+    tr.append(actions);
+    body.append(tr);
+  });
+
+  const page = Number(data.page) || state.page;
+  const total = Number(data.total) || 0;
+
+  $('pageinfo').textContent =
+    'Page ' + page + ' of ' + pages + ' · ' +
+    total.toLocaleString() + ' total leads';
+
+  $('prev').disabled = page <= 1;
+  $('next').disabled = page >= pages;
+}
+
+$('loginForm').addEventListener('submit', event => guard(() => login(event)));
+
+$('logout').addEventListener('click', logout);
+$('refresh').addEventListener('click', () => guard(load));
+
+$('prev').addEventListener('click', () => {
+  if (state.page > 1) {
+    state.page--;
+    guard(load);
+  }
+});
+
+$('next').addEventListener('click', () => {
+  if (state.page < pages) {
+    state.page++;
+    guard(load);
+  }
+});
+
+$('status').addEventListener('change', event => {
+  state.status = event.target.value;
+  state.page = 1;
+  guard(load);
+});
+
+$('sort').addEventListener('change', event => {
+  state.sort = event.target.value;
+  state.page = 1;
+  guard(load);
+});
+
+$('q').addEventListener('input', event => {
+  clearTimeout(searchTimer);
+
+  const value = event.target.value.trim();
+
+  searchTimer = setTimeout(() => {
+    state.q = value;
+    state.page = 1;
+    guard(load);
+  }, 300);
+});
+
+$('addForm').addEventListener('submit', event => {
+  event.preventDefault();
+
+  guard(async () => {
+    if (busy || !token) return;
+
+    const button = $('add');
+    button.disabled = true;
+
+    try {
+      const payload = {
+        name: $('nName').value.trim(),
+        email: $('nEmail').value.trim(),
+        company: $('nCompany').value.trim() || null
+      };
+
+      await api('/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      $('addForm').reset();
+      state.page = 1;
+
+      await load();
+      say('New lead added successfully.', 'success');
+    } finally {
+      button.disabled = false;
+    }
+  });
+});
+</script>
+
+</body>
+</html>
